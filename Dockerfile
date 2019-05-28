@@ -43,11 +43,12 @@ RUN apt-get update && apt-get install -y python-software-properties && add-apt-r
     export NO_INTERACTION=1 && make all -j4 && make test install \
     && apt-get install -y php-pear \
     && pecl install mongodb redis xdebug \
-	&& echo extension=redis.so > /etc/php/7.0/mods-available/redis.ini && \
-	&& echo extension=mongodb.so > /etc/php/7.0/mods-available/mongodb.ini && \
+    && echo extension=redis.so > /etc/php/7.0/mods-available/redis.ini \
+    && echo extension=mongodb.so > /etc/php/7.0/mods-available/mongodb.ini \
     && echo extension=v8js.so > /etc/php/7.0/mods-available/v8js.ini \
-	&& echo zend_extension=/usr/lib/php/20151012/xdebug.so > /etc/php/7.0/mods-available/xdebug.ini \
+    && echo zend_extension=/usr/lib/php/20151012/xdebug.so > /etc/php/7.0/mods-available/xdebug.ini s\
     && phpenmod mongodb redis v8js
+
 
 
 COPY image/scripts /tmp/
