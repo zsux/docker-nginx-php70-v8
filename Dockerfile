@@ -1,7 +1,8 @@
 FROM studionone/nginx-php7-v8js
 MAINTAINER dhole <dhole.me@gmail.com>
 
-RUN apt-get update && apt-get update &&  \
+RUN rm -f /etc/supervisord.conf /etc/nginx/sites-enabled/default /etc/php/7.1/fpm/pool.d/www.conf && \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
             sudo chrpath git subversion curl \
             php7.1-cli \
@@ -23,14 +24,13 @@ RUN apt-get update && apt-get update &&  \
             php7.1-xml \
             php7.1-zip \
             php7.1-xml \
-            php7.1-dev && \
-
+            php7.1-dev \
     && apt-get install -y php-pear \
     && pecl install mongodb redis xdebug \
     && echo extension=redis.so > /etc/php/7.1/mods-available/redis.ini \
     && echo extension=mongodb.so > /etc/php/7.1/mods-available/mongodb.ini \
     && rm -rf /etc/php/7.1/cli/conf.d/99-v8js.ini && echo extension=v8js.so > /etc/php/7.1/mods-available/v8js.ini \
-    && echo zend_extension=/usr/lib/php/20151012/xdebug.so > /etc/php/7.1/mods-available/xdebug.ini s\
+    && echo zend_extension=/usr/lib/php/20151012/xdebug.so > /etc/php/7.1/mods-available/xdebug.ini \
     && phpenmod mongodb redis v8js
 
 COPY image/scripts /tmp/
@@ -63,4 +63,6 @@ RUN apt-get remove -y make g++ chrpath && \
     rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
 WORKDIR /code
+
+ENTRYPOINT ["bash"]
 
