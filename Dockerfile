@@ -62,7 +62,10 @@ RUN apt-get remove -y make g++ chrpath && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
+COPY docker-entrypoint.sh /usr/bin/
+
 WORKDIR /code
 
-ENTRYPOINT [ "boot.py" ]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["bash"]
 
