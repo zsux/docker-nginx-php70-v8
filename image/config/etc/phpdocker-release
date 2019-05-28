@@ -1,0 +1,4 @@
+IMAGE_REPOSITORY_URL="https://github.com/zsux/docker"
+WIKI_REPOSITORY_URL="https://github.com/zsux/docker/wiki"
+MAINTAINER="Tommy <dhole.me@gmail.com>"
+VERSION=1.1.2

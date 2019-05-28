@@ -1,0 +1,1 @@
+* * * * * sh /var/run/check_crontab.sh >/dev/stdout 2>&1

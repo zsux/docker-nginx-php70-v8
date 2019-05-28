@@ -1,0 +1,55 @@
+#!/bin/bash
+
+export PATH="${PATH:+$PATH:}/bin:/usr/bin:/usr/local/bin"
+
+[ -r /etc/phpdocker-release ] && . /etc/phpdocker-release
+if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+	# Fall back to using the very slow lsb_release utility
+	DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+fi
+
+date=`date`
+load=`cat /proc/loadavg | awk '{print $1}'`
+container_id=`cat /proc/1/cgroup | grep 'docker/' | tail -1 | sed 's/^.*\///' | cut -c 1-12`
+docker_engine_ip=``
+#docker_engine_ip=`/sbin/ifconfig route|awk '/default/ { print $3 }'`
+version_php=`echo $(php -v) | cut -c5-10 | sed -e 's/-//g'`
+root_usage=`df -h / | awk '/\// {print $(NF-1)}'`
+memory_usage=`free -m | awk '/Mem:/ { total=$2 } /buffers\/cache/ { used=$3 } END { printf("%3.1f%%", used/total*100)}'`
+swap_usage=`free -m | awk '/Swap/ { printf("%3.1f%%", "exit !$2;$3/$2*100") }'`
+time=`uptime | grep -ohe 'up .*' | sed 's/,/\ hours/g' | awk '{ printf $2" "$3 }'`
+processes=`ps aux | wc -l`
+os_name=`lsb_release -s -d`
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+metadata() {
+  phpdocker-metadata --cached "$1"
+}
+
+KERNEL_VERSION=$(uname -r)
+if [[ $KERNEL_VERSION =~ ^3\.2\.[35][24].* ]]; then
+    KERNEL_TITLE="- Marvell"
+fi
+
+printf "\n"
+printf "* %s (%s %s %s)\n" "$os_name" "${KERNEL_VERSION}" "$(uname -m)" "$KERNEL_TITLE"
+printf "* PHP version: %s\n" $version_php
+printf "\n"
+[ -f /etc/motd.head ] && cat /etc/motd.head || true
+printf "\n"
+printf "Welcome on 鹰击 Eagle %s container Open Source (MIT).\n" "$VERSION"
+printf "\n"
+printf "System information as of: %s\n" "$date"
+printf "\n"
+printf "System load:\t%s\t\tMemory usage:\t%s %s\n" $load $memory_usage
+printf "Usage on /:\t%s\t\tSwap usage:\t%s\n" $root_usage $swap_usage
+printf "Processes:\t%s\t\tContainer ID:\t%s\n" $processes $container_id
+printf "\n"
+printf "Official repository: ${bold}%s${normal}\n" "$IMAGE_REPOSITORY_URL"
+printf "Maintainers: %s\n" "$MAINTAINER"
+printf "\n"
+printf "| ${bold}x-debug${normal} is disabled in CLI mode.\n"
+printf "\n"
+
+[ -f /etc/motd.tail ] && cat /etc/motd.tail || true
