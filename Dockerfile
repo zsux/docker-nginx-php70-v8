@@ -35,6 +35,9 @@ RUN pecl install mongodb redis xdebug && \
 
 RUN phpenmod mongodb redis
 
+
+RUN apt-get install -y sudo supervisor
+
 COPY image/scripts /tmp/
 
 RUN chmod +x /tmp/*.sh && \
@@ -56,9 +59,6 @@ ADD ./boot.py /bin/boot.py
 
 RUN chmod +x /bin/boot.py && chown -R www:www /home/www/
 
-WORKDIR /code
-USER www
-
 RUN chmod 600 /home/www/.ssh/authorized_keys \
     && chmod 700 /home/www/.ssh
 
@@ -67,5 +67,5 @@ RUN apt-get remove -y subversion make g++ chrpath && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
-
+WORKDIR /code
 
