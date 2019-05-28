@@ -52,7 +52,9 @@ RUN apt-get install -y openssh-server --no-install-recommends \
 
 ADD ./boot.py /bin/boot.py
 
-RUN chmod +x /bin/boot.py && chown -R www:www /home/www/
+ADD ./docker-entrypoint.sh /bin/docker-entrypoint.sh
+
+RUN chmod +x /bin/boot.py /bin/docker-entrypoint.sh && chown -R www:www /home/www/
 
 RUN chmod 600 /home/www/.ssh/authorized_keys \
     && chmod 700 /home/www/.ssh
@@ -62,10 +64,7 @@ RUN apt-get remove -y make g++ chrpath && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
-COPY docker-entrypoint.sh /usr/bin/
-
 WORKDIR /code
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["bash"]
-
