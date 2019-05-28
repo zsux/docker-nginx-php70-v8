@@ -129,3 +129,5 @@ do_init_user()
 if start == '1':
     logging.info("starting")
     os_system("sudo /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf")
+else:
+    os_system("bash")

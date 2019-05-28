@@ -64,5 +64,5 @@ RUN apt-get remove -y make g++ chrpath && \
 
 WORKDIR /code
 
-ENTRYPOINT ["bash"]
+ENTRYPOINT [ "boot.py" ]
 
