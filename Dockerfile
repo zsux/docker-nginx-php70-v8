@@ -30,7 +30,7 @@ RUN rm -f /etc/supervisord.conf /etc/nginx/sites-enabled/default /etc/php/7.1/fp
     && echo extension=redis.so > /etc/php/7.1/mods-available/redis.ini \
     && echo extension=mongodb.so > /etc/php/7.1/mods-available/mongodb.ini \
     && rm -rf /etc/php/7.1/cli/conf.d/*-v8js.ini && rm -rf /etc/php/7.1/fpm/conf.d/*-v8js.ini && echo extension=v8js.so > /etc/php/7.1/mods-available/v8js.ini \
-    && echo zend_extension=/usr/lib/php/20151012/xdebug.so > /etc/php/7.1/mods-available/xdebug.ini \
+    && echo zend_extension=/usr/lib/php/20160303/xdebug.so > /etc/php/7.1/mods-available/xdebug.ini \
     && phpenmod mongodb redis
 
 COPY image/scripts /tmp/
