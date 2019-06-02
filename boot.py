@@ -3,6 +3,7 @@ import argparse
 import os
 import sys
 import logging
+import base64
 import urllib.request
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,format='%(asctime)s : %(message)s')
 
