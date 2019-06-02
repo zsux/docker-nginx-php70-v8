@@ -124,9 +124,12 @@ def requstBaseAuth(url,dst,username = "",password = ""):
     request.add_header("Authorization", "Basic %s" % base64string.decode('utf-8'))
     try:
         u = urllib.request.urlopen(request)
-        open("/tmp/tmp.download", "w").write(u.read().decode())
+        print("=================")
+        res = u.read().decode()
+        open("/tmp/tmp.download", "w",encoding='utf-8').write(res)
         logging.info(u.getcode())
         os_system("sudo cp /tmp/tmp.download {}".format(dst))
+        os_system("sudo rm -f /tmp/tmp.download")
     except urllib.error.HTTPError as e:
         logging.info(e)
         logging.info(e.headers)
