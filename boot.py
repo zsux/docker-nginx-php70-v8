@@ -3,7 +3,7 @@ import argparse
 import os
 import sys
 import logging
-
+import urllib.request
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,format='%(asctime)s : %(message)s')
 
 parser = argparse.ArgumentParser(description='DOCKER BOOT')
@@ -105,8 +105,8 @@ for (index,cmd) in cmds:
 
 curls = []
 for env_key in os.environ:
-    if env_key.startswith("CURLS_"):
-        index = env_key.replace("CURLS_", "")
+    if env_key.startswith("CURL_"):
+        index = env_key.replace("CURL_", "")
         curl = os.getenv(env_key,None)
         logging.info("{},{}".format(index,curl))
         curls.append((int(index),curl))
