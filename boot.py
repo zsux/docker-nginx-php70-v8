@@ -131,8 +131,6 @@ def requstBaseAuth(url,dst,username = "",password = ""):
         logging.info(e.headers)
         sys.exit(1)
 
-requstBaseAuth(url,"/tmp/t",CURL_AUTH.strip())
-
 for (index,curl) in curls:
     logging.info("{0} > {1}".format(index,curl))
     t = curl.strip().split(" ")
