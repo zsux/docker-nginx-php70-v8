@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,format='%(asctime)s : %(message)s')
 
 parser = argparse.ArgumentParser(description='DOCKER BOOT')
-parser.add_argument('--start', help='start', default="0")
+parser.add_argument('--start', help='start', default="1")
 parser.add_argument('--boot', help='boot', default="")
 parser.add_argument('--pre_init', help='pre init', default="")
 parser.add_argument('--after_init', help='after init', default="")
@@ -103,10 +103,12 @@ for (index,cmd) in cmds:
     logging.info("{0} > {1}".format(index,cmd))
     os_system(cmd)
 
-for item in boot.split(","):
-    if len(item) == 0:
-        continue
-    os_system("sudo cp /etc/supervisor/conf_d/{0}.conf /etc/supervisor/conf.d/{0}.conf".format(item))
+BOOTS = os.getenv("BOOTS",None)
+if BOOTS is not None:
+    for item in BOOTS.split(","):
+        if len(item) == 0:
+            continue
+        os_system("sudo cp /etc/supervisor/conf_d/{0}.conf /etc/supervisor/conf.d/{0}.conf".format(item))
 
 if len(vh) > 0 and os.getenv(vh,None) is not None:
     os_system("sudo chmod 777 {1} && echo ${0} | base64 --decode > {1}".format(vh,"/etc/nginx/nginx.conf"))
