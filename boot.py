@@ -93,7 +93,7 @@ for env_key in os.environ:
     if env_key.startswith("CMD_"):
         index = env_key.replace("CMD_", "")
         cmd = os.getenv(env_key,None)
-        logging.info(env_key,cmd)
+        logging.info("{},{}".format(index,cmd))
         cmds.append((int(index),cmd))
 
 logging.info(cmds)
@@ -103,25 +103,40 @@ for (index,cmd) in cmds:
     logging.info("{0} > {1}".format(index,cmd))
     os_system(cmd)
 
-
 curls = []
 for env_key in os.environ:
     if env_key.startswith("CURLS_"):
         index = env_key.replace("CURLS_", "")
         curl = os.getenv(env_key,None)
-        logging.info(env_key,curl)
+        logging.info("{},{}".format(index,curl))
         curls.append((int(index),curl))
 
 logging.info(curls)
 curls.sort(key=lambda k: k[0])
 logging.info(curls)
-curl_auth = os.getenv("CURL_AUTH","")
+
+def requstBaseAuth(url,dst,username = "",password = ""):
+    logging.info(url)
+    request = urllib.request.Request(url)
+    string = '%s:%s' % (username,password)
+    base64string = base64.standard_b64encode(string.encode('utf-8'))
+    request.add_header("Authorization", "Basic %s" % base64string.decode('utf-8'))
+    try:
+        u = urllib.request.urlopen(request)
+        open("/tmp/tmp.download", "w").write(u.read().decode())
+        logging.info(u.getcode())
+        os_system("sudo cp /tmp/tmp.download {}".format(dst))
+    except urllib.error.HTTPError as e:
+        logging.info(e)
+        logging.info(e.headers)
+        sys.exit(1)
+
+requstBaseAuth(url,"/tmp/t",CURL_AUTH.strip())
+
 for (index,curl) in curls:
     logging.info("{0} > {1}".format(index,curl))
     t = curl.strip().split(" ")
-    if curl_auth != "":
-        curl_auth = "-u {}".format(curl_auth)
-    os_system("curl {} {} -o {}".format(curl_auth,t[0],t[1]))
+    requstBaseAuth(t[0],t[1],os.getenv("CONFIG_USER",""),os.getenv("CONFIG_PWD",''))
 
 BOOTS = os.getenv("BOOTS",None)
 if BOOTS is not None:
