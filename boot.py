@@ -88,6 +88,20 @@ if len(init) > 0:
 if len(after_init) > 0:
     os_system(after_init)
 
+cmds = []
+for env_key in os.environ:
+    if env_key.startswith("CMD_"):
+        index = env_key.replace("CMD_", "")
+        cmd = os.getenv(env_key,None)
+        logging.info(env_key,cmd)
+        cmds.append((int(index),cmd))
+
+logging.info(cmds)
+cmds.sort(key=lambda k: k[0])
+logging.info(cmds)
+for (index,cmd) in cmds:
+    logging.info("{0} > {1}".format(index,cmd))
+    os_system(cmd)
 
 for item in boot.split(","):
     if len(item) == 0:
