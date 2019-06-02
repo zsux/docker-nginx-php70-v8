@@ -115,14 +115,12 @@ for env_key in os.environ:
 logging.info(curls)
 curls.sort(key=lambda k: k[0])
 logging.info(curls)
-curl_auth = os.getenv(env_key,None)
+curl_auth = os.getenv("CURL_AUTH","")
 for (index,curl) in curls:
     logging.info("{0} > {1}".format(index,curl))
     t = curl.strip().split(" ")
-    if curl_auth is not None:
+    if curl_auth != "":
         curl_auth = "-u {}".format(curl_auth)
-    else:
-        curl_auth = ""
     os_system("curl {} {} -o {}".format(curl_auth,t[0],t[1]))
 
 BOOTS = os.getenv("BOOTS",None)
