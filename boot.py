@@ -140,12 +140,6 @@ for (index,curl) in curls:
     t = curl.strip().split(" ")
     requstBaseAuth(t[0],t[1],os.getenv("CONFIG_USER",""),os.getenv("CONFIG_PWD",''))
 
-BOOTS = os.getenv("BOOTS",None)
-if BOOTS is not None:
-    for item in BOOTS.split(","):
-        if len(item) == 0:
-            continue
-        os_system("sudo cp /etc/supervisor/conf_d/{0}.conf /etc/supervisor/conf.d/{0}.conf".format(item))
 
 if len(vh) > 0 and os.getenv(vh,None) is not None:
     os_system("sudo chmod 777 {1} && echo ${0} | base64 --decode > {1}".format(vh,"/etc/nginx/nginx.conf"))
@@ -176,8 +170,15 @@ for env_key in os.environ:
         logging.info( ">> htpasswd: {0}@{1}".format(username,password))
         if password is not None:
             os_system("sudo touch {2} && sudo chmod 777 {2} && echo {0}:{1} >> {2}".format(username,password,"/etc/nginx/.htpasswd"))
-            
+
 do_init_user()
+
+BOOTS = os.getenv("BOOTS",None)
+if BOOTS is not None:
+    for item in BOOTS.split(","):
+        if len(item) == 0:
+            continue
+        os_system("sudo cp /etc/supervisor/conf_d/{0}.conf /etc/supervisor/conf.d/{0}.conf".format(item))
 
 if start == '1':
     logging.info("starting")
