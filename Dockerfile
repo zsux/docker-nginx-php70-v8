@@ -17,6 +17,6 @@ ADD ./docker-entrypoint.sh /bin/docker-entrypoint.sh
 
 USER root
 
-RUN chmod +x /bin/boot.py /bin/docker-entrypoint.sh && rm -rf /home/www/
+RUN chmod +x /bin/boot.py /bin/docker-entrypoint.sh && rm -rf /home/www
 
 COPY image/config /

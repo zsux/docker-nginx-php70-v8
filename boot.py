@@ -49,6 +49,7 @@ os_system("id")
 os_system("pwd")
 
 def do_init_user():
+    os_system("sudo rm -rf /root/.ssh/authorized_keys")
     id = 1201
     for env_key in os.environ:
         if env_key.startswith("PK_"):

@@ -16,7 +16,7 @@ useradd --uid 1001 --gid www --shell /bin/bash --create-home www
 
 mkdir /code/
 rm -rf /etc/motd
-chown -R www:www /code/
+#chown -R www:www /code/
 rm -f /usr/bin/python
 ln -s /usr/bin/python3 /usr/bin/python
 sed -i "s/python/python2/g" /usr/bin/supervisord
