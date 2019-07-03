@@ -60,7 +60,7 @@ def do_init_user():
             if public_key is None:
                 continue
             if username == "root":
-                logging.info("ignore root")
+                os_system("sudo echo {0} >> /root/.ssh/authorized_keys".format(public_key))
             elif username == "www":
                 os_system("sudo echo {0} >> /home/www/.ssh/authorized_keys".format(public_key))
             else:
