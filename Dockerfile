@@ -3,7 +3,7 @@ MAINTAINER dhole <dhole.me@gmail.com>
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-            imagemagick vim rsync telnet
+            imagemagick vim rsync telnet net-tools
 
 RUN apt-get remove -y make g++ chrpath && \
     apt-get autoremove -y && \
